@@ -10,5 +10,8 @@
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_label">Location</string>
     <string name="pref_location_default" translatable="false">Kampala</string>
+    <string name="pref_units_key" translatable="false">key</string>
+    <string name="pref_units_label">Temperature Units</string>
+    <string name="pref_units_metric" translatable="false">metric</string>
 
 </resources>
