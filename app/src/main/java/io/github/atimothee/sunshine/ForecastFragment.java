@@ -1,9 +1,12 @@
 package io.github.atimothee.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +39,7 @@ import java.util.List;
 /**
  * Created by Timo on 2/20/15.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements AdapterView.OnItemClickListener{
     private static String LOG_TAG = ForecastFragment.class.getSimpleName();
     ArrayAdapter<String> mForecastAdapter;
 
@@ -60,7 +63,9 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("kampala");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = preferences.getString("location", "kampala");
+            weatherTask.execute(location);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -85,16 +90,7 @@ public class ForecastFragment extends Fragment {
                 R.id.list_item_forecast_textview,
                 weekForecast);
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(), mForecastAdapter.getItem(position), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, mForecastAdapter.getItem(position));
-                startActivity(intent);
-
-            }
-        });
+        listView.setOnItemClickListener(this);
         listView.setAdapter(mForecastAdapter);
         return rootView;
     }
@@ -115,6 +111,9 @@ public class ForecastFragment extends Fragment {
      */
     private String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String unit = preferences.getString("units", "metric");
+
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
@@ -180,12 +179,20 @@ public class ForecastFragment extends Fragment {
         return resultStrs;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT, mForecastAdapter.getItem(position));
+        startActivity(intent);
+    }
+
     class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
         protected String[] doInBackground(String... params) {
+            Log.d(LOG_TAG, "location: "+params[0]);
 
             if (params.length == 0) {
                 return null;
