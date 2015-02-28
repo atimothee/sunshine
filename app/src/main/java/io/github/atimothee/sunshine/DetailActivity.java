@@ -1,10 +1,12 @@
 package io.github.atimothee.sunshine;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
+    static final String FORECAST_SHARE_HASHTAG = "#SunshineApp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,17 +82,23 @@ public class DetailActivity extends ActionBarActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
+            Log.d("Menu", "menu clicked");
             if(item.getItemId() == R.id.action_share){
-                ShareActionProvider provider = new ShareActionProvider(getActivity());
-                //provider.setShareIntent(createShareIntent());
+                ShareActionProvider mProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+                mProvider.setShareIntent(createShareIntent());
 
                 return true;
             }
             return false;
         }
 
-//        private Intent createShareIntent(){
-//            //Intent i = new Intent()
-//        }
+        private Intent createShareIntent(){
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT) + FORECAST_SHARE_HASHTAG);
+            return shareIntent;
+        }
     }
 }
