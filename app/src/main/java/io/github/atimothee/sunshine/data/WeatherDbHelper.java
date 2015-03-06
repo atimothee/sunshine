@@ -21,10 +21,10 @@ public class WeatherDbHelper extends SQLiteOpenHelper{
 
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE "+LocationEntry.TABLE_NAME+ "("+
                 LocationEntry._ID+" INTEGER PRIMARY KEY, "+
-                LocationEntry.COLUMN_LOCATION_SETTING + "TEXT UNIQUE NOT NULL, "+
-                LocationEntry.COLUMN_CITY_NAME + "TEXT NOT NULL, "+
-                LocationEntry.COLUMN_COORD_LAT + "REAL NOT NULL, "+
-                LocationEntry.COLUMN_COORD_LONG + "REAL NOT NULL, "+
+                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, "+
+                LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, "+
+                LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL, "+
+                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL, "+
                 " UNIQUE("+LocationEntry.COLUMN_LOCATION_SETTING + ") ON CONFLICT IGNORE"+
                 " );";
 
@@ -34,12 +34,12 @@ public class WeatherDbHelper extends SQLiteOpenHelper{
                 WeatherEntry.COLUMN_DATETEXT+" TEXT NOT NULL, "+
                 WeatherEntry.COLUMN_SHORT_DESC+" TEXT NOT NULL, "+
                 WeatherEntry.COLUMN_WEATHER_ID+" INTEGER NOT NULL, "+
-                WeatherEntry.COLUMN_MIN_TEMP+"REAL NOT NULL, "+
-                WeatherEntry.COLUMN_MAX_TEMP+"REAL NOT NULL, "+
-                WeatherEntry.COLUMN_HUMIDITY+"REAL NOT NULL, "+
-                WeatherEntry.COLUMN_PRESSURE+"REAL NOT NULL, "+
-                WeatherEntry.COLUMN_WIND_SPEED+"REAL NOT NULL, "+
-                WeatherEntry.COLUMN_DEGREES+"REAL NOT NULL, "+
+                WeatherEntry.COLUMN_MIN_TEMP+" REAL NOT NULL, "+
+                WeatherEntry.COLUMN_MAX_TEMP+" REAL NOT NULL, "+
+                WeatherEntry.COLUMN_HUMIDITY+" REAL NOT NULL, "+
+                WeatherEntry.COLUMN_PRESSURE+" REAL NOT NULL, "+
+                WeatherEntry.COLUMN_WIND_SPEED+" REAL NOT NULL, "+
+                WeatherEntry.COLUMN_DEGREES+" REAL NOT NULL, "+
                 " FOREIGN KEY (" +WeatherEntry.COLUMN_LOC_KEY+ ") REFERENCES "+
                 LocationEntry.TABLE_NAME + "(" + LocationEntry._ID + "), "+
                 " UNIQUE ("+WeatherEntry.COLUMN_DATETEXT +", "+
