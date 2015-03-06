@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,7 +38,7 @@ import java.util.List;
 /**
  * Created by Timo on 2/20/15.
  */
-public class ForecastFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ForecastFragment extends Fragment {
     private static String LOG_TAG = ForecastFragment.class.getSimpleName();
     ArrayAdapter<String> mForecastAdapter;
 
@@ -62,13 +61,23 @@ public class ForecastFragment extends Fragment implements AdapterView.OnItemClic
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String location = preferences.getString("location", "kampala");
-            weatherTask.execute(location);
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    public void updateWeather(){
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+        weatherTask.execute(location);
     }
 
     @Override
@@ -90,8 +99,16 @@ public class ForecastFragment extends Fragment implements AdapterView.OnItemClic
                 R.id.list_item_forecast_textview,
                 weekForecast);
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-        listView.setOnItemClickListener(this);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = mForecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -111,9 +128,16 @@ public class ForecastFragment extends Fragment implements AdapterView.OnItemClic
      */
     private String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String unit = preferences.getString("units", "metric");
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String unitType = prefs.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+        if(unitType.equals(getString(R.string.pref_units_imperial))){
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+
+        }else if(!unitType.equals(getString(R.string.pref_units_metric))){
+            Log.d(LOG_TAG, "Unit type not found: "+unitType);
+        }
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
@@ -179,20 +203,12 @@ public class ForecastFragment extends Fragment implements AdapterView.OnItemClic
         return resultStrs;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT, mForecastAdapter.getItem(position));
-        startActivity(intent);
-    }
-
     class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
         protected String[] doInBackground(String... params) {
-            Log.d(LOG_TAG, "location: "+params[0]);
 
             if (params.length == 0) {
                 return null;
