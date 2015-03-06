@@ -9,6 +9,7 @@ import android.util.Log;
 import io.github.atimothee.sunshine.data.WeatherContract;
 import io.github.atimothee.sunshine.data.WeatherDbHelper;
 import io.github.atimothee.sunshine.data.WeatherContract.LocationEntry;
+import io.github.atimothee.sunshine.data.WeatherContract.WeatherEntry;
 
 /**
  * Created by Timo on 3/6/15.
@@ -59,6 +60,69 @@ public class TestDb extends AndroidTestCase{
         }
         else {
             fail("No values returned!");
+        }
+        ContentValues weatherContentValues = new ContentValues();
+        weatherContentValues.put(WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+        String testDate = "11/03/2015";
+        weatherContentValues.put(WeatherEntry.COLUMN_DATETEXT, testDate);
+        Double testDegrees = 1.1;
+        weatherContentValues.put(WeatherEntry.COLUMN_DEGREES, testDegrees);
+        Double testHumidity = 1.2;
+        weatherContentValues.put(WeatherEntry.COLUMN_HUMIDITY, testHumidity);
+        Double testMaxTemp = 20.0;
+        weatherContentValues.put(WeatherEntry.COLUMN_MAX_TEMP, testMaxTemp);
+        Double testMinTemp = 10.0;
+        weatherContentValues.put(WeatherEntry.COLUMN_MIN_TEMP, testMinTemp);
+        Double testPressure = 1.3;
+        weatherContentValues.put(WeatherEntry.COLUMN_PRESSURE, testPressure);
+        String testShortDesc = "Asteroids";
+        weatherContentValues.put(WeatherEntry.COLUMN_SHORT_DESC, testShortDesc);
+        Double testWindSpeed = 1.5;
+        weatherContentValues.put(WeatherEntry.COLUMN_WIND_SPEED, testWindSpeed);
+        Integer testWeatherId = 243;
+        weatherContentValues.put(WeatherEntry.COLUMN_WEATHER_ID, testWeatherId);
+
+        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherContentValues);
+        assertTrue(weatherRowId!=-1);
+
+        String[] weatherColumns = {WeatherEntry.COLUMN_HUMIDITY, WeatherEntry.COLUMN_DATETEXT, WeatherEntry.COLUMN_LOC_KEY,
+        WeatherEntry.COLUMN_DEGREES, WeatherEntry.COLUMN_MAX_TEMP, WeatherEntry.COLUMN_MIN_TEMP, WeatherEntry.COLUMN_PRESSURE,
+        WeatherEntry.COLUMN_SHORT_DESC, WeatherEntry.COLUMN_WEATHER_ID, WeatherEntry.COLUMN_PRESSURE, WeatherEntry.COLUMN_WIND_SPEED};
+
+        Cursor weatherCursor = db.query(WeatherEntry.TABLE_NAME, weatherColumns, null, null, null, null, null);
+        if(weatherCursor.moveToFirst()){
+            int maxIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_MAX_TEMP);
+            Double maxTemp = weatherCursor.getDouble(maxIndex);
+            int minIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_MIN_TEMP);
+            int pressureIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_PRESSURE);
+            int windIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_WIND_SPEED);
+            int weatherIdIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID);
+            int dateIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_DATETEXT);
+            int degreesIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_DEGREES);
+            int shortDescIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC);
+            int humidityIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_HUMIDITY);
+            int locIndex = weatherCursor.getColumnIndex(WeatherEntry.COLUMN_LOC_KEY);
+            assertEquals(maxTemp, testMaxTemp);
+            Double minTemp = weatherCursor.getDouble(minIndex);
+            assertEquals(minTemp, testMinTemp);
+            Double pressure = weatherCursor.getDouble(pressureIndex);
+            assertEquals(pressure, testPressure);
+            Double windSpeed = weatherCursor.getDouble(windIndex);
+            assertEquals(windSpeed, testWindSpeed);
+            Double humidity = weatherCursor.getDouble(humidityIndex);
+            assertEquals(humidity, testHumidity);
+            Double degrees = weatherCursor.getDouble(degreesIndex);
+            assertEquals(degrees, testDegrees);
+            String date= weatherCursor.getString(dateIndex);
+            assertEquals(date, testDate);
+            Integer weatherId = weatherCursor.getInt(weatherIdIndex);
+            assertEquals(weatherId, testWeatherId);
+            long locationId = weatherCursor.getLong(locIndex);
+            assertEquals(locationId, locationRowId);
+
+        }
+        else {
+            fail("No weather values returned!");
         }
 
     }
