@@ -20,7 +20,7 @@ public class TestProvider extends AndroidTestCase {
 
     static public String TEST_CITY_NAME = "Kampala";
 
-    public void testInsertReadDb(){
+    public void testInsertReadProvider(){
         String testLocationSetting = "99705";
         double testLatitude = 64.772;
         double testLongitude = -147.355;
@@ -39,7 +39,7 @@ public class TestProvider extends AndroidTestCase {
         String[] columns = {WeatherContract.LocationEntry._ID, WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, WeatherContract.LocationEntry.COLUMN_COORD_LAT,
                 WeatherContract.LocationEntry.COLUMN_COORD_LONG, WeatherContract.LocationEntry.COLUMN_CITY_NAME};
 
-        Cursor cursor = db.query(WeatherContract.LocationEntry.TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cursor = mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI, columns, null, null, null);
         if(cursor.moveToFirst()){
             int locationIndex = cursor.getColumnIndex(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING);
             String location = cursor.getString(locationIndex);
@@ -85,7 +85,8 @@ public class TestProvider extends AndroidTestCase {
                 WeatherContract.WeatherEntry.COLUMN_DEGREES, WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, WeatherContract.WeatherEntry.COLUMN_PRESSURE,
                 WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, WeatherContract.WeatherEntry.COLUMN_PRESSURE, WeatherContract.WeatherEntry.COLUMN_WIND_SPEED};
 
-        Cursor weatherCursor = db.query(WeatherContract.WeatherEntry.TABLE_NAME, weatherColumns, null, null, null, null, null);
+        Cursor weatherCursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
+                weatherColumns, null, null, null);
         if(weatherCursor.moveToFirst()){
             int maxIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
             Double maxTemp = weatherCursor.getDouble(maxIndex);
