@@ -34,8 +34,9 @@
                 android:value=".MainActivity"/>
             </activity>
         <provider
-            android:authorities="io.github.atimothee.sunshine"
-            android:name=".data.WeatherProvider"/>
+            android:name="io.github.atimothee.sunshine.provider.SunshineProvider"
+            android:authorities="io.github.atimothee.sunshine.provider"
+            android:exported="false" />
     </application>
 
 </manifest>
