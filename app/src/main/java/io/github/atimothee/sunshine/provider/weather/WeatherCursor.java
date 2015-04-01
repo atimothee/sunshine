@@ -72,8 +72,8 @@ public class WeatherCursor extends AbstractCursor implements WeatherModel {
      * Can be {@code null}.
      */
     @Nullable
-    public Long getLocationLatitude() {
-        Long res = getLongOrNull(LocationColumns.LATITUDE);
+    public Float getLocationLatitude() {
+        Float res = getFloatOrNull(LocationColumns.LATITUDE);
         return res;
     }
 
@@ -82,8 +82,8 @@ public class WeatherCursor extends AbstractCursor implements WeatherModel {
      * Can be {@code null}.
      */
     @Nullable
-    public Long getLocationLongitude() {
-        Long res = getLongOrNull(LocationColumns.LONGITUDE);
+    public Float getLocationLongitude() {
+        Float res = getFloatOrNull(LocationColumns.LONGITUDE);
         return res;
     }
 

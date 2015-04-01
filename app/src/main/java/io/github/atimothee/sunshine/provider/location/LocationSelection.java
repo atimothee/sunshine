@@ -112,62 +112,62 @@ public class LocationSelection extends AbstractSelection<LocationSelection> {
         return this;
     }
 
-    public LocationSelection latitude(Long... value) {
+    public LocationSelection latitude(Float... value) {
         addEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection latitudeNot(Long... value) {
+    public LocationSelection latitudeNot(Float... value) {
         addNotEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection latitudeGt(long value) {
+    public LocationSelection latitudeGt(float value) {
         addGreaterThan(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection latitudeGtEq(long value) {
+    public LocationSelection latitudeGtEq(float value) {
         addGreaterThanOrEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection latitudeLt(long value) {
+    public LocationSelection latitudeLt(float value) {
         addLessThan(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection latitudeLtEq(long value) {
+    public LocationSelection latitudeLtEq(float value) {
         addLessThanOrEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public LocationSelection longitude(Long... value) {
+    public LocationSelection longitude(Float... value) {
         addEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public LocationSelection longitudeNot(Long... value) {
+    public LocationSelection longitudeNot(Float... value) {
         addNotEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public LocationSelection longitudeGt(long value) {
+    public LocationSelection longitudeGt(float value) {
         addGreaterThan(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public LocationSelection longitudeGtEq(long value) {
+    public LocationSelection longitudeGtEq(float value) {
         addGreaterThanOrEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public LocationSelection longitudeLt(long value) {
+    public LocationSelection longitudeLt(float value) {
         addLessThan(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public LocationSelection longitudeLtEq(long value) {
+    public LocationSelection longitudeLtEq(float value) {
         addLessThanOrEquals(LocationColumns.LONGITUDE, value);
         return this;
     }

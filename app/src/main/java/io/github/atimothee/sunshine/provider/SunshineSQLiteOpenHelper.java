@@ -28,8 +28,8 @@ public class SunshineSQLiteOpenHelper extends SQLiteOpenHelper {
             + LocationColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LocationColumns.LOCATION_SETTING + " TEXT, "
             + LocationColumns.CITY_NAME + " TEXT, "
-            + LocationColumns.LATITUDE + " INTEGER, "
-            + LocationColumns.LONGITUDE + " INTEGER "
+            + LocationColumns.LATITUDE + " REAL, "
+            + LocationColumns.LONGITUDE + " REAL "
             + ", CONSTRAINT unique_name UNIQUE (location_setting) ON CONFLICT IGNORE"
             + " );";
 

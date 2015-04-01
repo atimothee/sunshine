@@ -51,8 +51,8 @@ public class LocationCursor extends AbstractCursor implements LocationModel {
      * Can be {@code null}.
      */
     @Nullable
-    public Long getLatitude() {
-        Long res = getLongOrNull(LocationColumns.LATITUDE);
+    public Float getLatitude() {
+        Float res = getFloatOrNull(LocationColumns.LATITUDE);
         return res;
     }
 
@@ -61,8 +61,8 @@ public class LocationCursor extends AbstractCursor implements LocationModel {
      * Can be {@code null}.
      */
     @Nullable
-    public Long getLongitude() {
-        Long res = getLongOrNull(LocationColumns.LONGITUDE);
+    public Float getLongitude() {
+        Float res = getFloatOrNull(LocationColumns.LONGITUDE);
         return res;
     }
 }

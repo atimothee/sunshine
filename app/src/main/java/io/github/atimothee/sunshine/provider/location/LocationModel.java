@@ -31,12 +31,12 @@ public interface LocationModel extends BaseModel {
      * Can be {@code null}.
      */
     @Nullable
-    Long getLatitude();
+    Float getLatitude();
 
     /**
      * Get the {@code longitude} value.
      * Can be {@code null}.
      */
     @Nullable
-    Long getLongitude();
+    Float getLongitude();
 }

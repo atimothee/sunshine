@@ -48,7 +48,7 @@ public class LocationContentValues extends AbstractContentValues {
         return this;
     }
 
-    public LocationContentValues putLatitude(@Nullable Long value) {
+    public LocationContentValues putLatitude(@Nullable Float value) {
         mContentValues.put(LocationColumns.LATITUDE, value);
         return this;
     }
@@ -58,7 +58,7 @@ public class LocationContentValues extends AbstractContentValues {
         return this;
     }
 
-    public LocationContentValues putLongitude(@Nullable Long value) {
+    public LocationContentValues putLongitude(@Nullable Float value) {
         mContentValues.put(LocationColumns.LONGITUDE, value);
         return this;
     }

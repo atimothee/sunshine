@@ -173,62 +173,62 @@ public class WeatherSelection extends AbstractSelection<WeatherSelection> {
         return this;
     }
 
-    public WeatherSelection locationLatitude(Long... value) {
+    public WeatherSelection locationLatitude(Float... value) {
         addEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLatitudeNot(Long... value) {
+    public WeatherSelection locationLatitudeNot(Float... value) {
         addNotEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLatitudeGt(long value) {
+    public WeatherSelection locationLatitudeGt(float value) {
         addGreaterThan(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLatitudeGtEq(long value) {
+    public WeatherSelection locationLatitudeGtEq(float value) {
         addGreaterThanOrEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLatitudeLt(long value) {
+    public WeatherSelection locationLatitudeLt(float value) {
         addLessThan(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLatitudeLtEq(long value) {
+    public WeatherSelection locationLatitudeLtEq(float value) {
         addLessThanOrEquals(LocationColumns.LATITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitude(Long... value) {
+    public WeatherSelection locationLongitude(Float... value) {
         addEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitudeNot(Long... value) {
+    public WeatherSelection locationLongitudeNot(Float... value) {
         addNotEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitudeGt(long value) {
+    public WeatherSelection locationLongitudeGt(float value) {
         addGreaterThan(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitudeGtEq(long value) {
+    public WeatherSelection locationLongitudeGtEq(float value) {
         addGreaterThanOrEquals(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitudeLt(long value) {
+    public WeatherSelection locationLongitudeLt(float value) {
         addLessThan(LocationColumns.LONGITUDE, value);
         return this;
     }
 
-    public WeatherSelection locationLongitudeLtEq(long value) {
+    public WeatherSelection locationLongitudeLtEq(float value) {
         addLessThanOrEquals(LocationColumns.LONGITUDE, value);
         return this;
     }

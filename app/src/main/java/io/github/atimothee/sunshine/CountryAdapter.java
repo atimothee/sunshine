@@ -41,8 +41,8 @@ public class CountryAdapter extends BaseAdapter{
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_item_forecast,null);
-        TextView nameTextView = (TextView)view.findViewById(R.id.list_item_forecast_textview);
-        nameTextView.setText(countries.get(position).name);
+        //TextView nameTextView = (TextView)view.findViewById(R.id.list_item_forecast_textview);
+        //nameTextView.setText(countries.get(position).name);
         return view;
     }
 }
