@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 /**
@@ -18,6 +19,56 @@ public class WeatherProvider extends ContentProvider{
     private static final int LOCATION_ID = 301;
 
     private WeatherDbHelper mOpenHelper;
+    private static final SQLiteQueryBuilder sWeatherLocationSettingQueryBuilder;
+    static {
+        sWeatherLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+        sWeatherLocationSettingQueryBuilder.setTables(WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN "+
+                WeatherContract.LocationEntry.TABLE_NAME+
+        " ON "+ WeatherContract.WeatherEntry.TABLE_NAME+
+        "."+ WeatherContract.WeatherEntry.COLUMN_LOC_KEY+
+        "="+ WeatherContract.LocationEntry.TABLE_NAME+
+        "."+ WeatherContract.LocationEntry._ID)
+        ;
+    }
+
+    private static String sLocationSettingSelection = WeatherContract.LocationEntry.TABLE_NAME+
+            "."+ WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + "= ?";
+
+    private static String sLocationSettingWithStartDateSelection = WeatherContract.LocationEntry.TABLE_NAME+
+            "."+ WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + "= ? "+
+            "AND "+ WeatherContract.WeatherEntry.COLUMN_DATETEXT + ">= ?";
+
+    private static String sLocationSettingWithDaySelection = WeatherContract.LocationEntry.TABLE_NAME+
+            "."+ WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + "= ? "+
+            "AND "+ WeatherContract.WeatherEntry.COLUMN_DATETEXT + ">= ?";
+
+    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder){
+           String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        String startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
+        String[] selectionArgs;
+        String selection;
+        if(startDate == null){
+            selection = sLocationSettingSelection;
+            selectionArgs = new String[]{locationSetting};
+
+        } else{
+            selection = sLocationSettingWithStartDateSelection;
+            selectionArgs = new String[]{locationSetting, startDate};
+
+        }
+        return sWeatherLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(), projection
+        , selection, selectionArgs, null, null, sortOrder);
+
+    }
+
+    private Cursor getWeatherByLocationWithDate(Uri uri, String[] projection, String sortOrder){
+        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        String day = WeatherContract.WeatherEntry.getDateFromUri(uri);
+        String[] selectionArgs = new String[]{locationSetting, day};
+        return sWeatherLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(), projection
+                , sLocationSettingWithDaySelection, selectionArgs, null, null, sortOrder);
+
+    }
 
     private static UriMatcher buildUriMatcher(){
 
@@ -44,10 +95,10 @@ public class WeatherProvider extends ContentProvider{
         Cursor retCursor;
         switch (buildUriMatcher().match(uri)){
             case WEATHER_WITH_LOCATION_AND_DATE:
-                retCursor = null;
+                retCursor = getWeatherByLocationWithDate(uri, projection, sortOrder);
                 break;
             case WEATHER_WITH_LOCATION:
-                retCursor = null;
+                retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
                 break;
             case WEATHER:
                 retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.WeatherEntry.TABLE_NAME,

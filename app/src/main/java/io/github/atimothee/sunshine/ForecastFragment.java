@@ -223,6 +223,16 @@ public class ForecastFragment extends Fragment {
             String format = "json";
             String units = "metric";
             int numDays = 7;
+            // These are the names of the JSON objects that need to be extracted.
+            final String OWM_LIST = "list";
+            final String OWM_CITY = "city";
+            final String OWM_CITY_NAME = "name";
+            final String OWM_WEATHER = "weather";
+            final String OWM_TEMPERATURE = "temp";
+            final String OWM_MAX = "max";
+            final String OWM_MIN = "min";
+            final String OWM_DATETIME = "dt";
+            final String OWM_DESCRIPTION = "main";
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -273,6 +283,19 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
+                try {
+                    JSONObject forecastJson = new JSONObject(forecastJsonStr);
+                    // Get the JSON object representing the day
+                    JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+                    JSONObject cityJson = forecastJson.getJSONObject(OWM_CITY);
+                    String city = cityJson.getString(OWM_CITY_NAME);
+                    Log.d(LOG_TAG, "city name "+city);
+                    JSONObject weather = weatherArray.getJSONObject(0);
+                    Long id = weather.getJSONObject("weather").getLong("id");
+                    Log.d(LOG_TAG, "weather id "+id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);

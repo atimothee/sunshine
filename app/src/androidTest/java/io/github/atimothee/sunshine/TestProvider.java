@@ -19,16 +19,17 @@ public class TestProvider extends AndroidTestCase {
     }
 
     static public String TEST_CITY_NAME = "Kampala";
+    static public String TEST_LOCATION = "99705";
+    static public String TEST_DATE = "20150327";
 
     public void testInsertReadProvider(){
-        String testLocationSetting = "99705";
         double testLatitude = 64.772;
         double testLongitude = -147.355;
         WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, TEST_CITY_NAME);
-        values.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, testLocationSetting);
+        values.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, TEST_LOCATION);
         values.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, testLatitude);
         values.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, testLongitude);
         long locationRowId;
@@ -50,7 +51,7 @@ public class TestProvider extends AndroidTestCase {
             int longIndex = cursor.getColumnIndex(WeatherContract.LocationEntry.COLUMN_COORD_LONG);
             double longitude = cursor.getDouble(longIndex);
             assertEquals(TEST_CITY_NAME, name);
-            assertEquals(testLocationSetting, location);
+            assertEquals(TEST_LOCATION, location);
             assertEquals(testLatitude, latitude);
             assertEquals(testLongitude, longitude);
         }
@@ -87,6 +88,85 @@ public class TestProvider extends AndroidTestCase {
 
         Cursor weatherCursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
                 weatherColumns, null, null, null);
+
+
+        if(weatherCursor.moveToFirst()){
+            int maxIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
+            Double maxTemp = weatherCursor.getDouble(maxIndex);
+            int minIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
+            int pressureIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_PRESSURE);
+            int windIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED);
+            int weatherIdIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID);
+            int dateIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATETEXT);
+            int degreesIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DEGREES);
+            int shortDescIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
+            int humidityIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_HUMIDITY);
+            int locIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_LOC_KEY);
+            assertEquals(maxTemp, testMaxTemp);
+            Double minTemp = weatherCursor.getDouble(minIndex);
+            assertEquals(minTemp, testMinTemp);
+            Double pressure = weatherCursor.getDouble(pressureIndex);
+            assertEquals(pressure, testPressure);
+            Double windSpeed = weatherCursor.getDouble(windIndex);
+            assertEquals(windSpeed, testWindSpeed);
+            Double humidity = weatherCursor.getDouble(humidityIndex);
+            assertEquals(humidity, testHumidity);
+            Double degrees = weatherCursor.getDouble(degreesIndex);
+            assertEquals(degrees, testDegrees);
+            String date= weatherCursor.getString(dateIndex);
+            assertEquals(date, testDate);
+            Integer weatherId = weatherCursor.getInt(weatherIdIndex);
+            assertEquals(weatherId, testWeatherId);
+            long locationId = weatherCursor.getLong(locIndex);
+            assertEquals(locationId, locationRowId);
+
+        }
+        else {
+            fail("No weather values returned!");
+        }
+        weatherCursor.close();
+
+        weatherCursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.buildWeatherLocation(TEST_LOCATION),
+                null, null, null, null);
+
+        if(weatherCursor.moveToFirst()){
+            int maxIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
+            Double maxTemp = weatherCursor.getDouble(maxIndex);
+            int minIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
+            int pressureIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_PRESSURE);
+            int windIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED);
+            int weatherIdIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID);
+            int dateIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATETEXT);
+            int degreesIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DEGREES);
+            int shortDescIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
+            int humidityIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_HUMIDITY);
+            int locIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_LOC_KEY);
+            assertEquals(maxTemp, testMaxTemp);
+            Double minTemp = weatherCursor.getDouble(minIndex);
+            assertEquals(minTemp, testMinTemp);
+            Double pressure = weatherCursor.getDouble(pressureIndex);
+            assertEquals(pressure, testPressure);
+            Double windSpeed = weatherCursor.getDouble(windIndex);
+            assertEquals(windSpeed, testWindSpeed);
+            Double humidity = weatherCursor.getDouble(humidityIndex);
+            assertEquals(humidity, testHumidity);
+            Double degrees = weatherCursor.getDouble(degreesIndex);
+            assertEquals(degrees, testDegrees);
+            String date= weatherCursor.getString(dateIndex);
+            assertEquals(date, testDate);
+            Integer weatherId = weatherCursor.getInt(weatherIdIndex);
+            assertEquals(weatherId, testWeatherId);
+            long locationId = weatherCursor.getLong(locIndex);
+            assertEquals(locationId, locationRowId);
+
+        }
+        else {
+            fail("No weather values returned!");
+        }
+        weatherCursor.close();
+
+        weatherCursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(TEST_LOCATION, TEST_DATE),
+                null, null, null, null);
         if(weatherCursor.moveToFirst()){
             int maxIndex = weatherCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
             Double maxTemp = weatherCursor.getDouble(maxIndex);
