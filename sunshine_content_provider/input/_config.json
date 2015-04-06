@@ -1,0 +1,13 @@
+{
+    "syntaxVersion": 3,
+    "projectPackageId": "io.github.atimothee.sunshine",
+    "authority": "io.github.atimothee.sunshine.provider",
+    "providerJavaPackage": "io.github.atimothee.sunshine.provider",
+    "providerClassName": "SunshineProvider",
+    "sqliteOpenHelperClassName": "SunshineSQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "SunshineSQLiteOpenHelperCallbacks",
+    "databaseFileName": "sunshine.db",
+    "databaseVersion": 1,
+    "enableForeignKeys": true,
+    "useAnnotations": true,
+}

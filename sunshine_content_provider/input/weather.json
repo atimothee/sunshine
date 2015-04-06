@@ -1,0 +1,46 @@
+{
+   "fields": [
+        {
+            "name": "date",
+            "type": "String",
+        },
+        {
+            "name": "location_setting_id",
+            "type": "Integer",
+            "foreignKey": {
+                "table": "location",
+                "onDelete": "CASCADE",
+            },
+        },
+        {
+            "name": "short_desc",
+            "type": "String",
+        },
+        {
+            "name": "weather_id",
+            "type": "Integer",
+            "nullable": false
+        },
+        {
+            "name": "humidity",
+            "type": "Float",
+        },
+        {
+            "name": "wind_speed",
+            "type": "Float",
+        },
+        {
+            "name": "max_temp",
+            "type": "Float",
+        },
+        {
+            "name": "min_temp",
+            "type": "Float",
+        },
+        {
+            "name": "degrees",
+            "type": "Float",
+        },
+        ],
+        
+    }

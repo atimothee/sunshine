@@ -1,0 +1,26 @@
+{
+   "fields": [
+        {
+            "name": "location_setting",
+            "type": "String",
+        },
+        {
+            "name": "city_name",
+            "type": "String",
+        },
+        {
+            "name": "latitude",
+            "type": "Float",
+        },
+        {
+            "name": "longitude",
+            "type": "Float",
+        },
+        ],
+        "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (location_setting) ON CONFLICT IGNORE"
+        },
+    ]
+    }
